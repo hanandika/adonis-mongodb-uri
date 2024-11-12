@@ -17,7 +17,7 @@
   </a>
 </p>
 
-> AdonisJS Provider to use Mongodb
+> AdonisJS Provider to use Mongodb with replicaset,readPreference,maxStalenessSeconds and uri string capabilities
 
 ### 🏠 [Homepage](https://github.com/EduSantosBrito/adonis-mongodb#readme)
 

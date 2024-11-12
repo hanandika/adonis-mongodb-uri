@@ -12,11 +12,13 @@ class AdonisMongodb {
         this.Config = Config;
         this.ObjectID = ObjectID;
         this.host = this.Config.get('mongodb.host');
+        this.hosts_replicaset = this.Config.get('mongodb.hosts_replicaset');
         this.port = this.Config.get('mongodb.port');
         this.username = this.Config.get('mongodb.username');
         this.password = this.Config.get('mongodb.password');
         this.dbName = this.Config.get('mongodb.database');
         this.options = this.Config.get('mongodb.options');
+        this.uri = this.Config.get('mongodb.uri');
         if (this.username && this.password !== null && this.options.authSource) {
             this.url = `mongodb://${this.username}:${this.password}@${this.host}:${this.port}/${this.dbName}?authSource=${this.options.authSource}`;
         }
@@ -25,6 +27,18 @@ class AdonisMongodb {
         }
         if (!this.username && !this.password) {
             this.url = `mongodb://${this.host}:${this.port}/${this.dbName}`;
+        }
+        if (this.hosts_replicaset && this.username && this.password && this.options.authSource && this.options.replicaSet) {
+            this.url = `mongodb://${this.username}:${this.password}@${this.hosts_replicaset}/${this.dbName}?authSource=${this.options.authSource}&replicaSet=${this.options.replicaSet}`;
+        }
+        if (this.options.readPreference) {
+            this.url += `&readPreference=${this.options.readPreference}`;
+        }
+        if (this.options.maxStalenessSeconds) {
+            this.url += `&maxStalenessSeconds=${this.options.maxStalenessSeconds}`;
+        }
+        if (this.uri) {
+            this.url = this.uri;
         }
         this.Client = MongoClient;
     }
@@ -58,9 +72,17 @@ class AdonisMongodb {
             if (err) {
                 throw new Error(err);
             }
-            this.db = client.db(this.dbName);
+            this.db = client.db(null);
             this.Client = client;
-            console.log(`Connected successfully to ${this.host}:${this.port}/${this.dbName}`);
+            if (this.host && this.port) {
+                console.log(`Connected successfully to mongodb ${this.host}:${this.port}/${this.dbName}`);
+            }
+            if (this.hosts_replicaset) {
+                console.log(`Connected successfully to mongodb replica-set ${this.hosts_replicaset}/${this.dbName}`);
+            }
+            if (this.uri) {
+                console.log(`Connected successfully to mongodb provided URI`);
+            }
         });
         return this.db;
     }
