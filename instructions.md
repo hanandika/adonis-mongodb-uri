@@ -37,18 +37,30 @@ add to .env file
 DB_URI=mongodb://USER:PASSWORD@HOST_IP_1,HOST_IP_2,HOST_IP_3/DB_NAME?authSource=AUTHSOURCE_NAME&replicaSet=REPLICASET_NAME&readPreference=PRIMARY_SECONDARY&maxStalenessSeconds=SECOND
 ```
 
-### Using Normal .env Variable
+### Using ReplicaSet
 
 add to .env file
 ```js
 DB_HOSTS_REPLICASET=HOST_IP_1,HOST_IP_2,HOST_IP_3
 DB_USER=USERNAME
-DB_PASS=PASSWORD
+DB_PASSWORD=PASSWORD
 DB_DATABASE=DATABASE_NAME
 DB_AUTH_SOURCE=AUTHSOURCE_NAME
 DB_REPLICA_SET=REPLICASET_NAME
 DB_READ_PREF=PRIMARY_SECONDARY
 DB_MAX_STALE=SECOND
+```
+
+### Using Normal .env Variable
+
+add to .env file
+```js
+DB_HOST=HOST_IP
+DB_PORT=PORT
+DB_USER=USERNAME
+DB_PASSWORD=PASSWORD
+DB_DATABASE=DATABASE_NAME
+DB_AUTH_SOURCE=AUTHSOURCE_NAME
 ```
 
 Once done you can access `Database` provider and run mongo queries as follows.
